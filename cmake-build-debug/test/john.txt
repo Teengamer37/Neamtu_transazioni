@@ -1,0 +1,3 @@
+Deposit 100 deposit 100
+Withdrawal 50 withdrawal 50
+Deposit 700 salary yay

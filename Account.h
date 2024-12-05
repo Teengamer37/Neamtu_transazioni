@@ -7,8 +7,10 @@
 
 class Account {
 public:
+    //costruttore
     Account(std::string username, std::string password);
 
+    //metodi
     bool loadTransactions();
     bool saveTransactions() const;
     double calcBalance();
@@ -23,6 +25,7 @@ public:
     Transaction getLargestTransaction() const;
     void clearTransactions();
 
+    //getter/setter
     const std::string &getUsername() const;
     void setUsername(const std::string &username);
     const std::string &getPassword() const;
