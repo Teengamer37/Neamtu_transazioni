@@ -86,10 +86,10 @@ bool Account::makeCreditTransfer(Account destination, double amount) {
     return true;
 }
 
-const std::vector<Transaction> Account::searchTransactionsByDesc(const std::string& desc) {
+std::vector<Transaction> Account::searchTransactionsByDesc(const std::string& desc) {
     std::vector<Transaction> transactionsFound;
 
-    for(auto transaction : transactions){
+    for(const auto& transaction : transactions){
         if(transaction.getDescription().find(desc, 0) != std::string::npos)
             transactionsFound.push_back(transaction);
     }
@@ -97,7 +97,18 @@ const std::vector<Transaction> Account::searchTransactionsByDesc(const std::stri
     return transactionsFound;
 }
 
-const std::vector<std::string> Account::viewTransactions() {
+std::vector<Transaction> Account::searchTransactionsByType(Transaction::Type type) const {
+    std::vector<Transaction> transactionsFound;
+
+    for(const auto& transaction : transactions){
+        if(transaction.getType()==type)
+            transactionsFound.push_back(transaction);
+    }
+
+    return transactionsFound;
+}
+
+std::vector<std::string> Account::viewTransactions() {
     std::vector<std::string> transactionVector;
     transactionVector.reserve(transactions.size());
 
@@ -106,6 +117,50 @@ const std::vector<std::string> Account::viewTransactions() {
     }
 
     return transactionVector;
+}
+
+double Account::calculateTotalDeposits() const {
+    double deposits = 0;
+
+    for (const auto& transaction : transactions) {
+        if (transaction.getType()==Transaction::DEPOSIT) {
+            deposits += transaction.getAmount();
+        }
+    }
+
+    return deposits;
+}
+
+double Account::calculateTotalWithdrawals() const {
+    double withdrawals = 0;
+
+    for (const auto& transaction : transactions) {
+        if (transaction.getType()==Transaction::WITHDRAWAL) {
+            withdrawals += transaction.getAmount();
+        }
+    }
+
+    return withdrawals;
+}
+
+Transaction Account::getLargestTransaction() const {
+    Transaction t;
+    if (transactions.empty()) return t;
+
+    double max = 0;
+
+    for (const auto& transaction : transactions) {
+        if (transaction.getAmount() >= max) {
+            max = transaction.getAmount();
+            t = transaction;
+        }
+    }
+
+    return t;
+}
+
+void Account::clearTransactions() {
+    transactions.clear();
 }
 
 int Account::getNumTransactions() {

@@ -15,9 +15,14 @@ public:
     double calcBalance();
     bool addTransaction(Transaction::Type type, double amount, const std::string& description);
     bool makeCreditTransfer(Account destination, double amount);
-    const std::vector<Transaction> searchTransactionsByDesc(const std::string& desc);
-    const std::vector<std::string> viewTransactions();
+    std::vector<Transaction> searchTransactionsByDesc(const std::string& desc);
+    std::vector<Transaction> searchTransactionsByType(Transaction::Type type) const;
+    std::vector<std::string> viewTransactions();
     int getNumTransactions();
+    double calculateTotalDeposits() const;
+    double calculateTotalWithdrawals() const;
+    Transaction getLargestTransaction() const;
+    void clearTransactions();
 
     const std::string &getUsername() const;
     void setUsername(const std::string &username);

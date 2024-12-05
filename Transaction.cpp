@@ -2,6 +2,8 @@
 
 #include <utility>
 
+Transaction::Transaction() {}
+
 Transaction::Transaction(Type type, double amount, std::string description) :
                         type(type), amount(amount), description(std::move(description)) {}
 
@@ -14,25 +16,14 @@ Transaction::Type Transaction::getType() const {
     return type;
 }
 
-void Transaction::setType(Transaction::Type type) {
-    Transaction::type = type;
-}
-
 double Transaction::getAmount() const {
     return amount;
-}
-
-bool Transaction::setAmount(double amount) {
-    if (amount <= 0) return false;
-
-    Transaction::amount = amount;
-    return true;
 }
 
 const std::string &Transaction::getDescription() const {
     return description;
 }
 
-void Transaction::setDescription(const std::string &description) {
-    Transaction::description = description;
+std::string Transaction::typeToString(Transaction::Type type) {
+    return (type == DEPOSIT) ? "Deposit" : "Withdrawal";
 }

@@ -8,16 +8,15 @@ class Transaction {
 public:
     enum Type {DEPOSIT, WITHDRAWAL};
 
+    Transaction();
     Transaction(Type type, double amount, std::string  description);
 
     std::string toString();
 
     Type getType() const;
-    void setType(Type type);
     double getAmount() const;
-    bool setAmount(double amount);
     const std::string &getDescription() const;
-    void setDescription(const std::string &description);
+    static std::string typeToString(Type type);
 
 private:
     Type type;
