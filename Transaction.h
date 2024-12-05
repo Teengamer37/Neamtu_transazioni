@@ -10,16 +10,13 @@ public:
 
     Transaction(Type type, double amount, const std::string& description);
 
+    const std::string toString();
+
     Type getType() const;
-
     void setType(Type type);
-
     double getAmount() const;
-
     void setAmount(double amount);
-
     const std::string &getDescription() const;
-
     void setDescription(const std::string &description);
 
 private:
