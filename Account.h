@@ -8,12 +8,13 @@
 
 class Account {
 public:
-    Account(std::string  username, std::string  password);
+    Account(std::string username, std::string password);
 
     bool loadTransactions();
     bool saveTransactions() const;
     double calcBalance();
     bool addTransaction(Transaction::Type type, double amount, const std::string& description);
+    bool makeCreditTransfer(Account destination, double amount);
     const std::vector<Transaction> searchTransactionsByDesc(const std::string& desc);
     const std::vector<std::string> viewTransactions();
     int getNumTransactions();
