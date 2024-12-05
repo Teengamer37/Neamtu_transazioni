@@ -120,7 +120,3 @@ void Account::setPassword(const std::string &password) {
 const std::vector<Transaction> &Account::getTransactions() const {
     return transactions;
 }
-
-void Account::setTransactions(const std::vector<Transaction> &transactions) {
-    Account::transactions = transactions;
-}

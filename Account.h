@@ -23,7 +23,6 @@ public:
     const std::string &getPassword() const;
     void setPassword(const std::string &password);
     const std::vector<Transaction> &getTransactions() const;
-    void setTransactions(const std::vector<Transaction> &transactions);
 
 private:
     std::string username;
