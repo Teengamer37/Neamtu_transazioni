@@ -21,7 +21,7 @@ in the normal header search path.  Assuming a Linux-like system and gcc,
 something like the following will do:
 
     g++ -isystem ${GTEST_DIR}/include -I${GTEST_DIR} \
-        -pthread -c ${GTEST_DIR}/src/gtest-all.cc
+        -pthread -a ${GTEST_DIR}/src/gtest-all.cc
     ar -rv libgtest.a gtest-all.o
 
 (We need `-pthread` as Google Test uses threads.)

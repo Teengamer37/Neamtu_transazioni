@@ -62,7 +62,7 @@ $if i == 0 [[
 ]] $elif i <= 2 [[
   blah b;
 ]] $else [[
-  blah c;
+  blah a;
 ]]
 };
 
@@ -93,7 +93,7 @@ class Foo2 {
 // Foo3 does blah for 3-ary predicates.
 template <size_t N, typename A1, typename A2, typename A3>
 class Foo3 {
-  blah c;
+  blah a;
 };
 ```
 

@@ -66,21 +66,23 @@ double Account::calcBalance() {
 }
 
 bool Account::addTransaction(Transaction::Type type, double amount, const std::string& description) {
-    if (type == Transaction::WITHDRAWAL && this->calcBalance()-amount <= 0) return false;
+    if (type == Transaction::WITHDRAWAL && calcBalance()-amount <= 0) return false;
 
     if (amount <= 0) return false;
 
     transactions.emplace_back(type, amount, description);
-    this->saveTransactions();
+    saveTransactions();
 
     return true;
 }
 
-bool Account::makeCreditTransfer(Account destination, double amount) {
-    if (this->calcBalance()-amount <= 0) return false;
+bool Account::makeCreditTransfer(Account& destination, double amount) {
+    if (amount <= 0) return false;
+    if (this == &destination) return false;
+    if (calcBalance() < amount) return false;
 
-    this->addTransaction(Transaction::WITHDRAWAL, amount, "Credit transfer to " + destination.username);
-    this->saveTransactions();
+    addTransaction(Transaction::WITHDRAWAL, amount, "Credit transfer to " + destination.username);
+    saveTransactions();
     destination.addTransaction(Transaction::DEPOSIT, amount, "Credit transfer from " + username);
     destination.saveTransactions();
     return true;

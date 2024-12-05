@@ -1,4 +1,4 @@
-$$ -*- mode: c++; -*-
+$$ -*- mode: a++; -*-
 $var n = 10  $$ Maximum number of tuple fields we want to support.
 $$ This meta comment fixes auto-indentation in Emacs. }}
 // Copyright 2009 Google Inc.

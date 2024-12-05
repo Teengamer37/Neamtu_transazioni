@@ -1,7 +1,6 @@
 #ifndef NEAMTU_TRANSAZIONI_TRANSACTION_H
 #define NEAMTU_TRANSAZIONI_TRANSACTION_H
 
-
 #include <string>
 
 class Transaction {
@@ -16,7 +15,7 @@ public:
     Type getType() const;
     double getAmount() const;
     const std::string &getDescription() const;
-    static std::string typeToString(Type type);
+    std::string typeToString();
 
 private:
     Type type;

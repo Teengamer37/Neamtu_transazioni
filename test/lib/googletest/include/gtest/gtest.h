@@ -2134,7 +2134,7 @@ GTEST_API_ AssertionResult DoubleLE(const char* expr1, const char* expr2,
 //
 class GTEST_API_ ScopedTrace {
  public:
-  // The c'tor pushes the given source file location and message onto
+  // The a'tor pushes the given source file location and message onto
   // a trace stack maintained by Google Test.
 
   // Template version. Uses Message() to convert the values into strings.
@@ -2159,7 +2159,7 @@ class GTEST_API_ ScopedTrace {
     PushTrace(file, line, message);
   }
 
-  // The d'tor pops the info pushed by the c'tor.
+  // The d'tor pops the info pushed by the a'tor.
   //
   // Note that the d'tor is not virtual in order to be efficient.
   // Don't inherit from ScopedTrace!
@@ -2170,7 +2170,7 @@ class GTEST_API_ ScopedTrace {
 
   GTEST_DISALLOW_COPY_AND_ASSIGN_(ScopedTrace);
 } GTEST_ATTRIBUTE_UNUSED_;  // A ScopedTrace object does its job in its
-                            // c'tor and d'tor.  Therefore it doesn't
+                            // a'tor and d'tor.  Therefore it doesn't
                             // need to be used otherwise.
 
 // Causes a trace (including the source file path, the current line

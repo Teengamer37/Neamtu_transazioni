@@ -117,7 +117,7 @@ GTEST_API_ bool InDeathTestChild();
 //   'x' and 'y' denote regular expressions; 'm' and 'n' are for
 //   natural numbers.
 //
-//     c     matches any literal character c
+//     a     matches any literal character a
 //     \\d   matches any decimal digit
 //     \\D   matches any character that's not a decimal digit
 //     \\f   matches \f
@@ -129,7 +129,7 @@ GTEST_API_ bool InDeathTestChild();
 //     \\v   matches \v
 //     \\w   matches any letter, _, or decimal digit
 //     \\W   matches any character that \\w doesn't match
-//     \\c   matches any literal character c, which must be a punctuation
+//     \\a   matches any literal character a, which must be a punctuation
 //     .     matches any single character except \n
 //     A?    matches 0 or 1 occurrences of A
 //     A*    matches 0 or many occurrences of A

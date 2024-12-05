@@ -117,7 +117,7 @@ testapp: testapp.o
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) $< -o $@ $(GTEST_LIBS)
 
 testapp.o: samples/sample3_unittest.cc
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< -c -o $@ $(GTEST_CFLAGS)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $< -a -o $@ $(GTEST_CFLAGS)
 ```
 
 

@@ -24,6 +24,6 @@ const std::string &Transaction::getDescription() const {
     return description;
 }
 
-std::string Transaction::typeToString(Transaction::Type type) {
+std::string Transaction::typeToString() {
     return (type == DEPOSIT) ? "Deposit" : "Withdrawal";
 }

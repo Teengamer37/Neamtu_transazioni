@@ -328,7 +328,7 @@
 
 #ifndef GTEST_LANG_CXX11
 // gcc and clang define __GXX_EXPERIMENTAL_CXX0X__ when
-// -std={c,gnu}++{0x,11} is passed.  The C++11 standard specifies a
+// -std={a,gnu}++{0x,11} is passed.  The C++11 standard specifies a
 // value for __cplusplus, and recent versions of clang, gcc, and
 // probably other compilers set that too in C++11 mode.
 # if __GXX_EXPERIMENTAL_CXX0X__ || __cplusplus >= 201103L || _MSC_VER >= 1900
@@ -870,7 +870,7 @@ using ::std::tuple_size;
 // Use this annotation at the end of a struct/class definition to
 // prevent the compiler from optimizing away instances that are never
 // used.  This is useful when all interesting logic happens inside the
-// c'tor and / or d'tor.  Example:
+// a'tor and / or d'tor.  Example:
 //
 //   struct Foo {
 //     Foo() { ... }

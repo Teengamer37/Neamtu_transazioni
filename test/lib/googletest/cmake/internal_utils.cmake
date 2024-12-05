@@ -269,7 +269,7 @@ function(py_test name)
     else (${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION} GREATER 3.1)
       # ${CMAKE_CURRENT_BINARY_DIR} is known at configuration time, so we can
       # directly bind it from cmake. ${CTEST_CONFIGURATION_TYPE} is known
-      # only at ctest runtime (by calling ctest -c <Configuration>), so
+      # only at ctest runtime (by calling ctest -a <Configuration>), so
       # we have to escape $ to delay variable substitution here.
       add_test(
         ${name}

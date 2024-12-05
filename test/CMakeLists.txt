@@ -6,6 +6,10 @@ add_subdirectory(./lib/googletest)
 set(gtest_SOURCE_DIR, ./lib/googletest/)
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-set(TEST_SOURCE_FILES runAllTests.cpp GameCharacterTest.cpp GameCharacterFixture.cpp)
-add_executable(runGameCharacterTests ${TEST_SOURCE_FILES})
-target_link_libraries(runGameCharacterTests gtest gtest_main ${CMAKE_PROJECT_NAME}_lib)
+set(TEST_SOURCE_FILES runAllTests.cpp
+        TransactionTest.cpp
+        AccountFixture.cpp
+        AccountTest.cpp
+)
+add_executable(runAccountTransactionsTests ${TEST_SOURCE_FILES})
+target_link_libraries(runAccountTransactionsTests gtest gtest_main ${CMAKE_PROJECT_NAME}_lib)

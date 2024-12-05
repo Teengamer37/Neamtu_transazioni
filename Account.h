@@ -1,7 +1,6 @@
 #ifndef NEAMTU_TRANSAZIONI_ACCOUNT_H
 #define NEAMTU_TRANSAZIONI_ACCOUNT_H
 
-
 #include <string>
 #include <vector>
 #include "Transaction.h"
@@ -14,7 +13,7 @@ public:
     bool saveTransactions() const;
     double calcBalance();
     bool addTransaction(Transaction::Type type, double amount, const std::string& description);
-    bool makeCreditTransfer(Account destination, double amount);
+    bool makeCreditTransfer(Account& destination, double amount);
     std::vector<Transaction> searchTransactionsByDesc(const std::string& desc);
     std::vector<Transaction> searchTransactionsByType(Transaction::Type type) const;
     std::vector<std::string> viewTransactions();

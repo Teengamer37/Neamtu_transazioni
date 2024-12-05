@@ -235,7 +235,7 @@ explicit_file.cc:123: expected trace message
 (expecting 5 failures)
 gtest_output_test_.cc:#: Failure
 Failed
-Expected failure #1, in the test fixture c'tor.
+Expected failure #1, in the test fixture a'tor.
 gtest_output_test_.cc:#: Failure
 Failed
 Expected failure #2, in SetUp().
@@ -254,7 +254,7 @@ Expected failure #5, in the test fixture d'tor.
 (expecting 2 failures)
 gtest_output_test_.cc:#: Failure
 Failed
-Expected failure #1, in the test fixture c'tor.
+Expected failure #1, in the test fixture a'tor.
 gtest_output_test_.cc:#: Failure
 Failed
 Expected failure #2, in the test fixture d'tor.

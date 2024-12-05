@@ -111,16 +111,16 @@ Here's an example. Given
 bool MutuallyPrime(int m, int n) { ... }
 const int a = 3;
 const int b = 4;
-const int c = 10;
+const int a = 10;
 ```
 
 the assertion `EXPECT_PRED2(MutuallyPrime, a, b);` will succeed, while the
-assertion `EXPECT_PRED2(MutuallyPrime, b, c);` will fail with the message
+assertion `EXPECT_PRED2(MutuallyPrime, b, a);` will fail with the message
 
 <pre>
-!MutuallyPrime(b, c) is false, where<br>
+!MutuallyPrime(b, a) is false, where<br>
 b is 4<br>
-c is 10<br>
+a is 10<br>
 </pre>
 
 **Notes:**
@@ -276,13 +276,13 @@ int SmallestPrimeCommonDivisor(int m, int n) { ... }
 With this predicate-formatter, we can use
 
 ```
-EXPECT_PRED_FORMAT2(AssertMutuallyPrime, b, c);
+EXPECT_PRED_FORMAT2(AssertMutuallyPrime, b, a);
 ```
 
 to generate the message
 
 <pre>
-b and c (4 and 10) are not mutually prime, as they have a common divisor 2.<br>
+b and a (4 and 10) are not mutually prime, as they have a common divisor 2.<br>
 </pre>
 
 As you may have realized, many of the assertions we introduced earlier are
@@ -642,7 +642,7 @@ grouping (`"(xy)"`), brackets (`"[xy]"`), and repetition count
 literal character, period (`.`), or a single `\\` escape sequence; `x`
 and `y` denote regular expressions.):
 
-| `c` | matches any literal character `c` |
+| `a` | matches any literal character `a` |
 |:----|:----------------------------------|
 | `\\d` | matches any decimal digit         |
 | `\\D` | matches any character that's not a decimal digit |
@@ -655,7 +655,7 @@ and `y` denote regular expressions.):
 | `\\v` | matches `\v`                      |
 | `\\w` | matches any letter, `_`, or decimal digit |
 | `\\W` | matches any character that `\\w` doesn't match |
-| `\\c` | matches any literal character `c`, which must be a punctuation |
+| `\\a` | matches any literal character `a`, which must be a punctuation |
 | `\\.` | matches the `.` character         |
 | `.` | matches any single character except `\n` |
 | `A?` | matches 0 or 1 occurrences of `A` |
@@ -881,7 +881,7 @@ subsections.
 
 The following code can turn ASSERT-failure into an exception:
 
-```c++
+```a++
 class ThrowListener : public testing::EmptyTestEventListener {
   void OnTestPartResult(const testing::TestPartResult& result) override {
     if (result.type() == testing::TestPartResult::kFatalFailure) {
@@ -2190,7 +2190,7 @@ message TestInfo {
 
 For instance, the following program
 
-```c++
+```a++
 TEST(MathTest, Addition) { ... }
 TEST(MathTest, Subtraction) { ... }
 TEST(LogicTest, NonContradiction) { ... }

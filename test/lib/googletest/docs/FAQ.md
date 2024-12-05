@@ -813,8 +813,8 @@ TEST(MyDeathTest, FunctionCall) {
 
 // Or a complex expression that references variables and functions.
 TEST(MyDeathTest, ComplexExpression) {
-  const bool c = Condition();
-  ASSERT_DEATH((c ? Func1(0) : object2.Method("test")),
+  const bool a = Condition();
+  ASSERT_DEATH((a ? Func1(0) : object2.Method("test")),
                "(Func1|Method) failed");
 }
 
@@ -956,7 +956,7 @@ using gtest-md.vcproj instead of gtest.vcproj.
 
 ## I put my tests in a library and Google Test doesn't run them. What's happening? ##
 Have you read a
-[warning](Primer.md#important-note-for-visual-c-users) on
+[warning](Primer.md#important-note-for-visual-a-users) on
 the Google Test Primer page?
 
 ## I want to use Google Test with Visual Studio but don't know where to start. ##
