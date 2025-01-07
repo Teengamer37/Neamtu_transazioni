@@ -30,7 +30,7 @@ bool Date::checkDate(int y, int m, int d) {
 }
 
 //posso verificare anche la data di un oggetto Date (utile quando verifico se un oggetto Date in un file è corretto)
-bool Date::checkDate() {
+bool Date::checkDate() const {
     return checkDate(year, month, day);
 }
 
@@ -66,17 +66,20 @@ int Date::getYear() const {
 
 //override operatore per controllare se 2 date sono uguali
 bool Date::operator==(const Date &other) const {
-    if (year == other.year && month == other.month && day == other.day) return true;
+    if(!checkDate() || !other.checkDate()) return false;
+    if(year == other.year && month == other.month && day == other.day) return true;
     return false;
 }
 
 //override operatore per controllare se 2 date sono diverse (chiamo operator== e inverto il risultato)
 bool Date::operator!=(const Date &other) const {
+    if(!checkDate() || !other.checkDate()) return false;
     return !(*this==other);
 }
 
 //override operatore per controllare se data 1 >= data 2
 bool Date::operator>=(const Date& other) const {
+    if(!checkDate() || !other.checkDate()) return false;
     if (year != other.year) return year > other.year;
     if (month != other.month) return month > other.month;
     return day >= other.day;
@@ -84,6 +87,7 @@ bool Date::operator>=(const Date& other) const {
 
 //override operatore per controllare se data 1 <= data 2
 bool Date::operator<=(const Date& other) const {
+    if(!checkDate() || !other.checkDate()) return false;
     if (year != other.year) return year < other.year;
     if (month != other.month) return month < other.month;
     return day <= other.day;

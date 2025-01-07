@@ -11,7 +11,7 @@ public:
 
     //metodi
     static bool checkDate(int t, int m, int d);
-    bool checkDate();
+    bool checkDate() const;
     static bool isLeapYear(int year);
     std::string dateToString() const;
     static Date getPresentDate();

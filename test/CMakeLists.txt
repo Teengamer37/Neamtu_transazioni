@@ -10,6 +10,8 @@ set(TEST_SOURCE_FILES runAllTests.cpp
         TransactionTest.cpp
         AccountFixture.cpp
         AccountTest.cpp
+        DateFixture.cpp
+        DateTest.cpp
 )
 add_executable(runAccountTransactionsTests ${TEST_SOURCE_FILES})
 target_link_libraries(runAccountTransactionsTests gtest gtest_main ${CMAKE_PROJECT_NAME}_lib)
