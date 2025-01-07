@@ -9,7 +9,7 @@ Transaction::Transaction(Type type, double amount, std::string description, cons
 //trasforma il contenuto della transazione in string per renderlo facilmente stampabile
 std::string Transaction::toString() const {
     std::string transactionType = (type == Transaction::DEPOSIT ? "Deposit" : "Withdrawal");
-    return date.dateToString() + " - " + transactionType + " - " + std::to_string(amount) + " Euro - " + description;
+    return date.dateToString() + " - " + transactionType + " - " + std::to_string(amount).substr(0, std::to_string(amount).find('.')+3) + " Euro - " + description;
 }
 
 //permette di determinare senza usare le parole-chiave dell'enum il tipo di transazione semplicemente in stringa

@@ -1,2 +1,2 @@
-Deposit 1000.71 Salary Nov24
-Withdrawal 564.55 Groceries
+2025/1/7 Deposit 100 deposit 100
+2025/10/16 Withdrawal 50 withdrawal 50

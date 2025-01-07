@@ -10,7 +10,7 @@ public:
     enum Type {DEPOSIT, WITHDRAWAL};
 
     //costruttore
-    Transaction(Type type, double amount, std::string description, const Date& date);
+    Transaction(Type type, double amount, std::string description, const Date& date = Date::getPresentDate());
 
     //metodi
     std::string toString() const;

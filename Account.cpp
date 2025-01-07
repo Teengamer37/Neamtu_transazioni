@@ -85,8 +85,8 @@ bool Account::addTransaction(Transaction::Type type, double amount, const std::s
     if (type == Transaction::WITHDRAWAL && calcBalance()-amount <= 0) return false;
     //...o se inserisco un valore <=0...
     if (amount <= 0) return false;
-    //...o se la data non è conforme
-    if (!date.checkDate()) return false;
+    //...o se la data non è conforme o è "nel passato"
+    if (!date.checkDate() || date<Date::getPresentDate()) return false;
 
     //aggiungo la transazione e la salvo nel file
     transactions.emplace_back(type, amount, description, date);
@@ -97,10 +97,7 @@ bool Account::addTransaction(Transaction::Type type, double amount, const std::s
 
 //aggiunge una transazione fornendo un oggetto Transaction
 bool Account::addTransaction(const Transaction& t) {
-    transactions.emplace_back(t);
-    saveTransactions();
-
-    return true;
+    return addTransaction(t.getType(), t.getAmount(), t.getDescription(), t.getDate());
 }
 
 //bonifico ordinario tra due conti correnti
@@ -111,7 +108,7 @@ bool Account::makeCreditTransfer(Account& destination, double amount, Date date)
     if (this == &destination) return false;
     //...o se la somma da trasferire supera il bilancio del conto...
     if (calcBalance() < amount) return false;
-    //...o se la data non è conforme
+    //...o se la data non è conforme o è "nel passato"
     if (!date.checkDate()) return false;
 
     //aggiungo prelievo al mittente e deposito al destinatario, salvando tutto nei loro file

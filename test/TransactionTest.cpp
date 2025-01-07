@@ -3,12 +3,16 @@
 #include "../Transaction.h"
 
 TEST(Transaction, Constructor) {
-    Transaction t(Transaction::DEPOSIT, 300, "first deposit");
-    ASSERT_EQ(t.getAmount(), 300);
-    ASSERT_EQ(t.getType(), Transaction::DEPOSIT);
-    ASSERT_EQ(t.typeToString(), "Deposit");
-    ASSERT_EQ(t.getDescription(), "first deposit");
+    Transaction t1(Transaction::DEPOSIT, 300, "first deposit");
+    ASSERT_EQ(t1.getAmount(), 300);
+    ASSERT_EQ(t1.getType(), Transaction::DEPOSIT);
+    ASSERT_EQ(t1.typeToString(), "Deposit");
+    ASSERT_EQ(t1.getDescription(), "first deposit");
+    ASSERT_EQ(t1.getDate(), Date::getPresentDate());
+    ASSERT_EQ(t1.getDateToString(), Date::getPresentDate().dateToString());
 
-    t = Transaction(Transaction::WITHDRAWAL, 300, "first withdrawal");
-    ASSERT_EQ(t.getType(), Transaction::WITHDRAWAL);
+    Transaction t2(Transaction::WITHDRAWAL, 300, "first withdrawal");
+    ASSERT_EQ(t2.getType(), Transaction::WITHDRAWAL);
+
+    ASSERT_EQ(t1==t2, false);
 }

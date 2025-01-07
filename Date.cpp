@@ -77,18 +77,16 @@ bool Date::operator!=(const Date &other) const {
 
 //override operatore per controllare se data 1 >= data 2
 bool Date::operator>=(const Date& other) const {
-    if(year < other.year) return false;
-    if(month < other.month) return false;
-    if(day < other.day) return false;
-    return true;
+    if (year != other.year) return year > other.year;
+    if (month != other.month) return month > other.month;
+    return day >= other.day;
 }
 
 //override operatore per controllare se data 1 <= data 2
 bool Date::operator<=(const Date& other) const {
-    if(year > other.year) return false;
-    if(month > other.month) return false;
-    if(day > other.day) return false;
-    return true;
+    if (year != other.year) return year < other.year;
+    if (month != other.month) return month < other.month;
+    return day <= other.day;
 }
 
 //override operatore per controllare se data 1 < data 2
