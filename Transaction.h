@@ -2,28 +2,35 @@
 #define NEAMTU_TRANSAZIONI_TRANSACTION_H
 
 #include <string>
+#include <vector>
+#include "Date.h"
 
 class Transaction {
 public:
     enum Type {DEPOSIT, WITHDRAWAL};
 
-    //costruttori
-    Transaction();
-    Transaction(Type type, double amount, std::string  description);
+    //costruttore
+    Transaction(Type type, double amount, std::string description, const Date& date);
 
     //metodi
-    std::string toString();
-    std::string typeToString();
+    std::string toString() const;
+    std::string typeToString() const;
+    std::string getDateToString() const;
 
-    //getter/setter
+    //getter
     Type getType() const;
     double getAmount() const;
     const std::string &getDescription() const;
+    Date getDate() const;
+
+    //override operatore
+    bool operator==(const Transaction& other) const;
 
 private:
     Type type;
     double amount;
     std::string description;
+    Date date;
 };
 
 

@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <fstream>
+#include <algorithm>
 
 //definizione costruttore
 Account::Account(std::string username, std::string password) :
@@ -18,13 +19,21 @@ bool Account::loadTransactions() {
 
     //elimino le transazioni correnti dell'account (se ce ne sono) e scorro nel file salvando le transazioni
     transactions.clear();
-    std::string typeStr, description;
+    std::string typeStr, description, dateStr;
     double amount;
-    while (file >> typeStr >> amount) {
+    while (file >> dateStr >> typeStr >> amount) {
         std::getline(file, description);
+
+        //creo data di default (se mentre recupero la data dal file essa non è una vera data, inserisco la data di default)
+        Date date(1980, 1, 1);
+        std::vector<int> v(3);
+        sscanf(dateStr.c_str(), "%d/%d/%d", &v[0], &v[1], &v[2]);
+        //verifico se la data recuperata è corretta
+        if (Date::checkDate(v[0], v[1], v[2])) date = Date(v[0], v[1], v[2]);
+
         Transaction::Type type = (typeStr == "Deposit") ? Transaction::DEPOSIT : Transaction::WITHDRAWAL;
         description = description.substr(1);
-        transactions.emplace_back(type, amount, description);
+        transactions.emplace_back(type, amount, description, date);
     }
 
     //chiudo il file
@@ -41,10 +50,10 @@ bool Account::saveTransactions() const {
         return false;
     }
 
-    //immetto ad ogni riga il tipo di transazione, la somma e la descrizione
+    //immetto ad ogni riga la data, il tipo di transazione, la somma e la descrizione
     for (const auto& transaction : transactions) {
-        file << (transaction.getType() == Transaction::DEPOSIT ? "Deposit" : "Withdrawal") << " "
-             << transaction.getAmount() << " " << transaction.getDescription() << "\n";
+        file << transaction.getDateToString() << " " << (transaction.getType() == Transaction::DEPOSIT ? "Deposit" : "Withdrawal")
+             << " " << transaction.getAmount() << " "  << transaction.getDescription() << "\n";
     }
 
     //chiudo il file
@@ -53,7 +62,7 @@ bool Account::saveTransactions() const {
 }
 
 //calcola il bilancio del conto corrente
-double Account::calcBalance() {
+double Account::calcBalance() const {
     double balance = 0.0;
 
     for (const auto& transaction : transactions) {
@@ -70,39 +79,52 @@ double Account::calcBalance() {
 }
 
 //aggiunge una transazione
-bool Account::addTransaction(Transaction::Type type, double amount, const std::string& description) {
+//l'attributo date è opzionale: se non viene inserito, viene messo in automatico la data odierna
+bool Account::addTransaction(Transaction::Type type, double amount, const std::string& description, Date date) {
     //impedisco l'aggiunta se inserisco una somma di prelievo maggiore di quella che ho a disposizione...
     if (type == Transaction::WITHDRAWAL && calcBalance()-amount <= 0) return false;
-    //...o se inserisco un valore <=0
+    //...o se inserisco un valore <=0...
     if (amount <= 0) return false;
+    //...o se la data non è conforme
+    if (!date.checkDate()) return false;
 
-    //aggiungo la transazione e la salvo
-    transactions.emplace_back(type, amount, description);
+    //aggiungo la transazione e la salvo nel file
+    transactions.emplace_back(type, amount, description, date);
+    saveTransactions();
+
+    return true;
+}
+
+//aggiunge una transazione fornendo un oggetto Transaction
+bool Account::addTransaction(const Transaction& t) {
+    transactions.emplace_back(t);
     saveTransactions();
 
     return true;
 }
 
 //bonifico ordinario tra due conti correnti
-bool Account::makeCreditTransfer(Account& destination, double amount) {
+bool Account::makeCreditTransfer(Account& destination, double amount, Date date) {
     //annullo l'operazione se la somma da trasferire è <=0...
     if (amount <= 0) return false;
     //...o se il mittente è anche il destinatario...
     if (this == &destination) return false;
-    //...o se la somma da trasferire supera il bilancio del conto
+    //...o se la somma da trasferire supera il bilancio del conto...
     if (calcBalance() < amount) return false;
+    //...o se la data non è conforme
+    if (!date.checkDate()) return false;
 
     //aggiungo prelievo al mittente e deposito al destinatario, salvando tutto nei loro file
-    addTransaction(Transaction::WITHDRAWAL, amount, "Credit transfer to " + destination.username);
+    addTransaction(Transaction::WITHDRAWAL, amount, "Credit transfer to " + destination.username, date);
     saveTransactions();
-    destination.addTransaction(Transaction::DEPOSIT, amount, "Credit transfer from " + username);
+    destination.addTransaction(Transaction::DEPOSIT, amount, "Credit transfer from " + username, date);
     destination.saveTransactions();
     return true;
 }
 
 //cerca le transazioni attraverso la descrizione
 //(verrà evidenziata la transazione che conterrà una substring desc)
-std::vector<Transaction> Account::searchTransactionsByDesc(const std::string& desc) {
+std::vector<Transaction> Account::searchTransactionsByDesc(const std::string& desc) const {
     std::vector<Transaction> transactionsFound;
 
     //cerco tra le varie transazioni...
@@ -131,8 +153,46 @@ std::vector<Transaction> Account::searchTransactionsByType(Transaction::Type typ
     return transactionsFound;
 }
 
+//cerca le transazioni attraverso la data della transazione
+std::vector<Transaction> Account::searchTransactionsByDate(const Date& date) const {
+    std::vector<Transaction> transactionsFound;
+
+    //cerco tra le varie transazioni...
+    for(const auto& transaction : transactions){
+        //..se la data corrisponde...
+        if(transaction.getDate()==date)
+            //...aggiungo nel vector...
+            transactionsFound.push_back(transaction);
+    }
+
+    //...e ritorno il vector
+    return transactionsFound;
+}
+
+//trova tutte le transazioni comprese tra le due date
+std::vector<Transaction> Account::filterTransactionsByDateInterval(const Date& start, const Date& end) const {
+    //se data inizio non è minore strettamente di data fine, mi blocco
+    //(se voglio cercare le transazioni di una sola data, uso searchTransactionsByDate)
+    if(end<=start) {
+        throw std::runtime_error("Start date is NOT > end date!");
+    }
+
+    std::vector<Transaction> transactionsFound;
+
+    //cerco tra le varie transazioni...
+    for(const auto& transaction : transactions){
+        //...se la data della transazione rientra nell'intervallo...
+        if(transaction.getDate() >= start && transaction.getDate() <= end)
+            //...la aggiungo nel vector...
+            transactionsFound.push_back(transaction);
+    }
+
+    //...e ritorno il vector
+    return transactionsFound;
+}
+
 //ritorna un vector di stringhe con le varie descrizioni di tutte le transazioni
-std::vector<std::string> Account::viewTransactions() {
+std::vector<std::string> Account::viewTransactions() const {
     std::vector<std::string> transactionVector;
     transactionVector.reserve(transactions.size());
 
@@ -143,6 +203,32 @@ std::vector<std::string> Account::viewTransactions() {
 
     //...e ritorno il vector
     return transactionVector;
+}
+
+//ritorna un vector di stringhe con le varie transazioni in ordine cronologico (secondo la data)
+std::vector<std::string> Account::viewTransactionsByDateOrder() const {
+    std::vector<std::string> transactionVector;
+    transactionVector.reserve(transactions.size());
+
+    //salvo una copia delle transazioni in sortedTransactions e
+    //ordino il vettore di transazioni con std::sort
+    std::vector<Transaction> sortedTransactions = transactions;  // Copia delle transazioni
+    std::sort(sortedTransactions.begin(), sortedTransactions.end(),[](const Transaction& t1, const Transaction& t2) {
+                  return t1.getDate() < t2.getDate();  // Confronta le date
+              });
+
+    //inserisco nel vector tutti i toString generati dalle transazioni singole adesso ordinate...
+    for (const auto& transaction : sortedTransactions) {
+        transactionVector.emplace_back(transaction.toString());
+    }
+
+    //...e ritorno il vector
+    return transactionVector;
+}
+
+//ritorna la dimensione del vector di transazioni
+int Account::getNumTransactions() const {
+    return transactions.size();
 }
 
 //calcola l'ammontare dei depositi
@@ -179,9 +265,11 @@ double Account::calculateTotalWithdrawals() const {
 
 //ritorna la transazione con l'ammontare più grande (indifferente se esso è prelievo o deposito)
 Transaction Account::getLargestTransaction() const {
-    Transaction t;
-    //se non ho transazioni, finisco prima ritornando un Transaction non inizializzato
-    if (transactions.empty()) return t;
+    Transaction t(Transaction::DEPOSIT, 0, "", Date(1980,1,1));
+    //se non ho transazioni, finisco prima lanciando un errore
+    if (transactions.empty()) {
+        throw std::runtime_error("No transactions available");
+    }
 
     double max = 0;
 
@@ -201,9 +289,24 @@ void Account::clearTransactions() {
     transactions.clear();
 }
 
-//ritorna la dimensione del vector di transazioni
-int Account::getNumTransactions() {
-    return transactions.size();
+//cancella una specifica transazione che combaci tutti i dati (data, tipo, ammontare, descrizione)
+bool Account::cancelTransaction(const Transaction& t) {
+    //se non ho transazioni, finisco prima lanciando un errore
+    if (transactions.empty()) {
+        throw std::runtime_error("No transactions available");
+    }
+
+    //itero le transazioni...
+    for (auto it = transactions.begin(); it != transactions.end(); it++) {
+        //...fino a quando non trovo la transazione uguale a quella che sto cercando
+        if (*it == t) {
+            transactions.erase(it);
+            return true;
+        }
+    }
+
+    //se non trovo nulla, non cancello nulla
+    return false;
 }
 
 const std::string &Account::getUsername() const {
